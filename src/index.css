@@ -1,0 +1,92 @@
+@import url('./xy-theme.css');
+
+html,
+body {
+  margin: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+}
+
+.customNodeBody {
+  width: 25px;
+  height: 25px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  background: transparent; /* Прозрачный фон */
+  border: none; /* Без контура */
+}
+
+.react-flow__node-custom {
+  width: 45px; /* Фиксированный размер */
+  height: 45px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid var(--color-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  box-sizing: border-box; /* Учитываем padding в размере */
+  padding: 10px; /* Сохраняем padding из xy-theme.css */
+  box-shadow: var(--xy-node-boxshadow-default);
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border 0.3s ease;
+}
+
+/* Отключаем анимацию границы для базового состояния */
+.react-flow__node-custom:not(.highlight) {
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Без border */
+}
+
+/* Убираем transition при перетаскивании, чтобы избежать дергания */
+.react-flow__node-custom.draggable {
+  transition: none; /* Отключаем анимацию для перетаскивания */
+}
+
+/* Переносим эффекты команд на react-flow__node-custom */
+.react-flow__node-custom.visit {
+  background: var(--color-primary); /* #ff0073 */
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+  transform: scale(1.2);
+}
+
+.react-flow__node-custom.highlight {
+  border: 2px solid var(--color-primary);
+  transition: none; /* Мгновенное применение подсветки */
+}
+
+.react-flow__node-custom.visited {
+  background: #00cc00; /* Зеленый для посещённых вершин */
+  border-color: #00cc00;
+  box-shadow: 0 0 10px #00cc00;
+  transform: scale(1.2);
+}
+
+.react-flow__node-custom.inQueue {
+  background: #ffd700; /* Желтый для вершин в очереди */
+  border-color: #ffd700;
+  box-shadow: 0 0 10px #ffd700;
+  transform: scale(1.2);
+}
+
+div.customHandle {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: none;
+  border: none;
+  opacity: 0;
+  pointer-events: none; /* Убираем влияние хэндлов на перетаскивание */
+}

@@ -20,12 +20,12 @@ body {
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  background: transparent; /* Прозрачный фон */
-  border: none; /* Без контура */
+  background: transparent;
+  border: none;
 }
 
 .react-flow__node-custom {
-  width: 45px; /* Фиксированный размер */
+  width: 45px;
   height: 45px;
   border-radius: 50%;
   background: #fff;
@@ -34,25 +34,22 @@ body {
   justify-content: center;
   align-items: center;
   font-size: 12px;
-  box-sizing: border-box; /* Учитываем padding в размере */
-  padding: 10px; /* Сохраняем padding из xy-theme.css */
+  box-sizing: border-box;
+  padding: 10px;
   box-shadow: var(--xy-node-boxshadow-default);
   transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, border 0.3s ease;
 }
 
-/* Отключаем анимацию границы для базового состояния */
 .react-flow__node-custom:not(.highlight) {
-  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* Без border */
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-/* Убираем transition при перетаскивании, чтобы избежать дергания */
 .react-flow__node-custom.draggable {
-  transition: none; /* Отключаем анимацию для перетаскивания */
+  transition: none;
 }
 
-/* Переносим эффекты команд на react-flow__node-custom */
 .react-flow__node-custom.visit {
-  background: var(--color-primary); /* #ff0073 */
+  background: var(--color-primary);
   border-color: var(--color-primary);
   box-shadow: 0 0 10px var(--color-primary);
   transform: scale(1.2);
@@ -60,18 +57,18 @@ body {
 
 .react-flow__node-custom.highlight {
   border: 2px solid var(--color-primary);
-  transition: none; /* Мгновенное применение подсветки */
+  transition: none;
 }
 
 .react-flow__node-custom.visited {
-  background: #00cc00; /* Зеленый для посещённых вершин */
+  background: #00cc00;
   border-color: #00cc00;
   box-shadow: 0 0 10px #00cc00;
   transform: scale(1.2);
 }
 
 .react-flow__node-custom.inQueue {
-  background: #ffd700; /* Желтый для вершин в очереди */
+  background: #ffd700;
   border-color: #ffd700;
   box-shadow: 0 0 10px #ffd700;
   transform: scale(1.2);
@@ -88,5 +85,5 @@ div.customHandle {
   transform: none;
   border: none;
   opacity: 0;
-  pointer-events: none; /* Убираем влияние хэндлов на перетаскивание */
+  pointer-events: none;
 }

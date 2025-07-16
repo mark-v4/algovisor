@@ -10,11 +10,11 @@
 
 .menu .xy-theme__button {
   height: 40px;
-  width: 150px; /* Фиксированная ширина кнопок */
+  width: 150px;
 }
 
 .menu .xy-theme__button + .xy-theme__button {
-  margin-left: 0; /* Переопределяем смещение для соседних кнопок */
+  margin-left: 0;
 }
 
 .menu .xy-theme__label {

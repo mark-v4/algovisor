@@ -33,7 +33,7 @@ const defaultEdgeOptions = {
   markerEnd: { type: MarkerType.ArrowClosed, color: '#b1b1b7' },
 };
 
-const EasyConnectExample = () => {
+const App = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [isCreateMode, setIsCreateMode] = useState(false);
@@ -591,7 +591,7 @@ const EasyConnectExample = () => {
 
 const AppWithProvider = () => (
   <ReactFlowProvider>
-    <EasyConnectExample />
+    <App />
   </ReactFlowProvider>
 );
 

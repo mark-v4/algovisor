@@ -24,9 +24,9 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }) {
       edgeStyle.stroke = edgeState.color;
     }
     if (edgeState.highlight) {
-      edgeStyle.strokeWidth = 1.5; // Толще при подсветке
+      edgeStyle.strokeWidth = 1.5;
     } else {
-      edgeStyle.strokeWidth = 1; // Обычная толщина
+      edgeStyle.strokeWidth = 1;
     }
     return edgeStyle;
   };

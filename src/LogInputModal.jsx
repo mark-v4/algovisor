@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Menu.css';
 
 const LogInputModal = ({ onClose, onSubmit, initialLog }) => {
-  const [logContent, setLogContent] = useState(initialLog || ''); // Используем initialLog или пустую строку
+  const [logContent, setLogContent] = useState(initialLog || '');
 
-  // Обновляем logContent, если initialLog изменился
   useEffect(() => {
     setLogContent(initialLog || '');
   }, [initialLog]);
@@ -40,7 +39,7 @@ const LogInputModal = ({ onClose, onSubmit, initialLog }) => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 30, // Увеличенный z-index
+        zIndex: 30,
       }}
     >
       <div

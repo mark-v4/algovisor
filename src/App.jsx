@@ -20,6 +20,7 @@ import GraphInputModal from './GraphInputModal';
 import PlaybackControls from './PlaybackControls';
 import LogPanel from './LogPanel';
 import { AppContext } from './AppContext';
+import { getHarmoniousBorderColor, toHexColor, getContrastTextColor } from './utils';
 
 const initialNodes = [];
 const initialEdges = [];
@@ -160,6 +161,8 @@ const App = () => {
                 ...newStates[key],
                 visit: false,
                 color: newStates[key].savedColor || undefined,
+                borderColor: newStates[key].savedBorderColor || undefined,
+                textColor: newStates[key].savedTextColor || undefined,
                 visited: newStates[key].savedVisited || false,
                 inQueue: newStates[key].savedInQueue || false,
               };
@@ -169,9 +172,13 @@ const App = () => {
               ...currentNode,
               visit: true,
               savedColor: currentNode.color,
+              savedBorderColor: currentNode.borderColor,
+              savedTextColor: currentNode.textColor,
               savedVisited: currentNode.visited || false,
               savedInQueue: currentNode.inQueue || false,
               color: undefined,
+              borderColor: undefined,
+              textColor: undefined,
               visited: false,
               inQueue: false,
             };
@@ -181,13 +188,27 @@ const App = () => {
         case 'colorNode':
           setNodeStates((prev) => {
             const node = prev[args[0]] || {};
+            const newColor = toHexColor(args[1]); // Преобразуем цвет в HEX
+            const newBorderColor = getHarmoniousBorderColor(args[1]); // Вычисляем цвет границы
+            const newTextColor = getContrastTextColor(args[1]); // Вычисляем контрастный цвет текста
+            if (!newColor || !newBorderColor || !newTextColor) {
+              setLogMessages((prevMessages) => [
+                ...prevMessages,
+                { text: `Ошибка: неверный цвет "${args[1]}" в команде colorNode`, type: 'error' },
+              ]);
+              return prev; // Пропускаем изменение состояния
+            }
             return {
               ...prev,
               [args[0]]: {
                 ...node,
-                color: args[1],
+                color: newColor,
+                borderColor: newBorderColor,
+                textColor: newTextColor,
                 visit: false,
                 savedColor: undefined,
+                savedBorderColor: undefined,
+                savedTextColor: undefined,
                 savedVisited: node.visited || false,
                 savedInQueue: node.inQueue || false,
                 visited: node.visited || false,
@@ -200,11 +221,19 @@ const App = () => {
           setEdgeStates((prev) => {
             const edge = edges.find((e) => e.source === args[0] && e.target === args[1]);
             if (!edge) return prev;
-            const newStates = { ...prev, [edge.id]: { ...prev[edge.id], color: args[2] } };
+            const newColor = toHexColor(args[2]);
+            if (!newColor) {
+              setLogMessages((prevMessages) => [
+                ...prevMessages,
+                { text: `Ошибка: неверный цвет "${args[2]}" в команде colorEdge`, type: 'error' },
+              ]);
+              return prev;
+            }
+            const newStates = { ...prev, [edge.id]: { ...prev[edge.id], color: newColor } };
             if (!isDirected && edge.data?.undirectedPairId) {
               const reverseEdge = edges.find((e) => e.id !== edge.id && e.data.undirectedPairId === edge.data.undirectedPairId);
               if (reverseEdge) {
-                newStates[reverseEdge.id] = { ...prev[reverseEdge.id], color: args[2] };
+                newStates[reverseEdge.id] = { ...prev[reverseEdge.id], color: newColor };
               }
             }
             return newStates;
@@ -228,7 +257,11 @@ const App = () => {
                 visited: false,
                 inQueue: false,
                 color: undefined,
+                borderColor: undefined,
+                textColor: undefined,
                 savedColor: undefined,
+                savedBorderColor: undefined,
+                savedTextColor: undefined,
                 savedVisited: false,
                 savedInQueue: false,
               },
@@ -274,7 +307,11 @@ const App = () => {
                 visited: false,
                 inQueue: false,
                 color: undefined,
+                borderColor: undefined,
+                textColor: undefined,
                 savedColor: undefined,
+                savedBorderColor: undefined,
+                savedTextColor: undefined,
                 savedVisited: false,
                 savedInQueue: false,
               };
@@ -299,6 +336,7 @@ const App = () => {
                 visited: true,
                 visit: false,
                 color: '#00cc00',
+                textColor: getContrastTextColor('#00cc00'),
                 savedColor: undefined,
                 savedVisited: true,
                 savedInQueue: node.inQueue || false,
@@ -317,6 +355,7 @@ const App = () => {
                 inQueue: true,
                 visit: false,
                 color: '#ffd700',
+                textColor: getContrastTextColor('#ffd700'),
                 savedColor: undefined,
                 savedVisited: node.visited || false,
                 savedInQueue: true,

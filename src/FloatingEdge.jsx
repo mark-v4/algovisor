@@ -34,6 +34,19 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }) {
   const markerId = `${id}-arrow`;
   const markerColor = edgeState.markerEnd?.color || markerEnd?.color || '#b1b1b7';
 
+  const saveWeight = () => {
+    const parsedWeight = parseFloat(editValue);
+    const newWeight = isNaN(parsedWeight) ? 0 : parsedWeight;
+    setEdges((eds) =>
+      eds.map((edge) =>
+        edge.id === id || (edge.data?.undirectedPairId && edge.data.undirectedPairId === data.undirectedPairId)
+          ? { ...edge, data: { ...edge.data, weight: newWeight } }
+          : edge
+      )
+    );
+    setIsEditing(false);
+  };
+
   return (
     <g>
       <defs>
@@ -50,7 +63,7 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }) {
             d="M1,1 L6.5,4 L1,7"
             fill={markerColor}
             stroke={markerColor}
-        />
+          />
         </marker>
       </defs>
       <BaseEdge id={id} path={path} markerEnd={`url(#${markerId})`} style={getEdgeStyle()} />
@@ -67,25 +80,19 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }) {
               fontSize: '12px',
             }}
             className="nodrag nopan"
+            translate="no"
           >
             {isEditing ? (
               <input
                 type="text"
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
-                onBlur={() => {
-                  setIsEditing(false);
-                  const parsedWeight = parseFloat(editValue);
-                  const newWeight = isNaN(parsedWeight) ? 0 : parsedWeight;
-                  setEdges((eds) =>
-                    eds.map((edge) =>
-                      edge.id === id || (edge.data?.undirectedPairId && edge.data.undirectedPairId === data.undirectedPairId)
-                        ? { ...edge, data: { ...edge.data, weight: newWeight } }
-                        : edge
-                    )
-                  );
+                onBlur={saveWeight}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    saveWeight();
+                  }
                 }}
-                onKeyDown={(e) => e.key === 'Enter' && setIsEditing(false)}
                 autoFocus
                 style={{
                   width: '50px',
@@ -96,7 +103,7 @@ function FloatingEdge({ id, source, target, markerEnd, style, data }) {
                 }}
               />
             ) : (
-              <div onClick={() => isWeighted && setIsEditing(true)} style={{ cursor: 'pointer' }}>
+              <div onClick={() => isWeighted && setIsEditing(true)} style={{ cursor: 'pointer' }} translate="no">
                 {data.weight}
               </div>
             )}

@@ -19,10 +19,17 @@ export default function CustomNode({ id, data }) {
   };
 
   const getStyle = () => {
+    const style = {};
     if (nodeState.color) {
-      return { backgroundColor: nodeState.color };
+      style.backgroundColor = nodeState.color;
     }
-    return {};
+    if (nodeState.borderColor) {
+      style.borderColor = nodeState.borderColor;
+    }
+    if (nodeState.textColor) {
+      style.color = nodeState.textColor;
+    }
+    return style;
   };
 
   return (
